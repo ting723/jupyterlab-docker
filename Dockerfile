@@ -4,13 +4,11 @@ FROM python:alpine
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories && \
 apk update && \
-apk add libffi-dev g++ zeromq-dev
-RUN apk add openjdk11-jdk nodejs go npm yarn git
+apk add libffi-dev g++  zeromq zeromq-dev cmake musl-dev make libunwind && \
+apk add openjdk11-jdk nodejs go npm yarn git
 RUN pip install jupyterlab 
-RUN apk add gcc cmake musl-dev zeromq make libunwind
-RUN npm install -g ijavascript --unsafe-perm=true --allow-root  && \
-ijsinstall --install=global 
-RUN git clone https://github.com/SpencerPark/IJava.git && \
+RUN pip install pyzmq
+RUN git clone https://gitee.com/ting723/IJava.git && \
 cd IJava/ && \
 ./gradlew installKernel && \
 cd .. && rm -rf IJava && \
